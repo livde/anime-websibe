@@ -3,7 +3,7 @@ name: Test and Deploy to Surge
 on:
   push:
     branches:
-      - main
+      - main  # Se activará cuando hagas push a la rama main
 
 jobs:
   test_and_deploy:
@@ -22,14 +22,13 @@ jobs:
         run: npm install
 
       - name: Ejecutar pruebas
-        run: npm test  # Ejecuta las pruebas unitarias con Jest
+        run: npm test  # Esto ejecutará las pruebas unitarias con Jest
 
-      - name: Instala Surge
+      - name: Instalar Surge
         run: npm install --global surge
 
       - name: Publicar página
-        if: success()  # Solo despliega si las pruebas pasan
+        if: success()  # Solo ejecuta si las pruebas pasan
         env:
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-        run: |
-          surge --project ./ --domain animeliv.surge.sh --token $SURGE_TOKEN
+        run: surge --project ./ --domain animeliv.surge.sh --token $SURGE_TOKEN
