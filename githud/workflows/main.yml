@@ -25,4 +25,4 @@ jobs:
         env:
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}  # Asegúrate de que SURGE_TOKEN está configurado
         run: |
-          surge --project ./ --domain wicked-expansion.surge.sh --token $SURGE_TOKEN  # Usar tu dominio específico
+          surge --project ./ --domain crooked-bird.surge.sh --token $SURGE_TOKEN  # Usar tu dominio específico
