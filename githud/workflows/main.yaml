@@ -1,23 +1,25 @@
-name: Deploy to Surge.sh
+name: Publicar Pagina a Surge.sh
 
 on:
   push:
     branches:
-      - main  # Cambia esto si tu branch se llama diferente
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Clona el repositorio
+        uses: actions/checkout@v3
 
-    - name: Install Surge
-      run: npm install --global surge
+      - name: Configurar Node.js  
+        uses: actions/setup-node@v3
+        with:
+            node-version: '18' 
 
-    - name: Deploy to Surge.sh
-      run: surge ./ https://wicked-expansion.surge.sh
-      env:
-        SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}  # Asegúrate de que SURGE_TOKEN está configurado
+      - name: Instala Surge       
+        run: npm install --global surge
 
+      - name: Publicar pagina
+        run: surge --project ./ --domain ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
