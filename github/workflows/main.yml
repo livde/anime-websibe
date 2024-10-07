@@ -1,4 +1,4 @@
-name: Publicar Página en Surge
+name: Test and Deploy to Surge
 
 on:
   push:
@@ -6,23 +6,30 @@ on:
       - main
 
 jobs:
-  deploy:
+  test_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Clona el repositorio
         uses: actions/checkout@v3
 
-      - name: Configurar Node.js  
+      - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
-            node-version: '20'  # Actualizado a la versión 20
+          node-version: '20'
 
-      - name: Instala Surge       
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar pruebas
+        run: npm test  # Ejecuta las pruebas unitarias con Jest
+
+      - name: Instala Surge
         run: npm install --global surge
 
       - name: Publicar página
+        if: success()  # Solo despliega si las pruebas pasan
         env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}  # Asegúrate de que SURGE_TOKEN está configurado
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
         run: |
-          surge --project ./ --domain crooked-bird.surge.sh --token $SURGE_TOKEN  # Usar tu dominio específico
+          surge --project ./ --domain animeliv.surge.sh --token $SURGE_TOKEN
